@@ -2,11 +2,12 @@ import { Field, ID, ObjectType } from "type-graphql";
 
 @ObjectType()
 export class Client {
+  /* the only place to use ID */
   @Field((type) => ID)
   id: string;
 
   @Field()
-  name: string;
+  firstName: string;
 
   @Field()
   surname: string;
@@ -15,14 +16,5 @@ export class Client {
   email: string;
 
   @Field()
-  phone: string;
-
-  @Field()
   country: string;
-
-  @Field()
-  postcode: string;
-
-  @Field()
-  address: string;
 }

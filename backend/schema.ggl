@@ -4,14 +4,22 @@
 # -----------------------------------------------
 
 type Client {
-  address: String!
   country: String!
   email: String!
+  firstName: String!
   id: ID!
-  name: String!
-  phone: String!
-  postcode: String!
   surname: String!
+}
+
+input CreateClientInput {
+  country: String!
+  email: String!
+  firstName: String!
+  surname: String!
+}
+
+type Mutation {
+  createClient(createClientObject: CreateClientInput!): Client!
 }
 
 type Query {
