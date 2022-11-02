@@ -2,6 +2,7 @@ import "reflect-metadata";
 import path from "path";
 
 require("dotenv").config({ path: ".env" });
+import "./mongodb/connect";
 
 import { buildSchema } from "type-graphql";
 import { ApolloServer } from "apollo-server";
