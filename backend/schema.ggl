@@ -3,6 +3,17 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Client {
+  address: String!
+  country: String!
+  email: String!
+  id: ID!
+  name: String!
+  phone: String!
+  postcode: String!
+  surname: String!
+}
+
 type Query {
-  hello: String!
+  clients: [Client!]!
 }
