@@ -28,6 +28,7 @@ input EditClientInput {
 
 type Mutation {
   createClient(createClientObject: CreateClientInput!): Client!
+  deleteClient(id: String!): String!
   editClient(editClientObject: EditClientInput!): Client!
 }
 
