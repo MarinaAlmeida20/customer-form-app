@@ -32,5 +32,6 @@ type Mutation {
 }
 
 type Query {
+  client(id: String!): Client!
   clients: [Client!]!
 }

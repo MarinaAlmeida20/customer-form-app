@@ -11,6 +11,13 @@ export class ClientResolver {
     return await ClientMongo.find();
   }
 
+  // Get one client
+  @Query(() => Client)
+  async client(@Arg("id") id: string) {
+    // If _id === id return client
+    return await ClientMongo.findOne({ _id: id });
+  }
+
   // Create client
   @Mutation(() => Client)
   async createClient(
