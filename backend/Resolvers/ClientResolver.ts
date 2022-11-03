@@ -1,15 +1,17 @@
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
-import { CreateClientInput } from "../Inputs/ClientInputs";
+import { CreateClientInput, EditClientInput } from "../Inputs/ClientInputs";
 import { Client } from "../Models/Client";
 import { ClientMongo } from "../mongodb/Models/Client";
 
 @Resolver()
 export class ClientResolver {
+  // Get all clients
   @Query(() => [Client])
   async clients() {
     return await ClientMongo.find();
   }
 
+  // Create client
   @Mutation(() => Client)
   async createClient(
     @Arg("createClientObject") createClientObject: CreateClientInput
@@ -22,5 +24,16 @@ export class ClientResolver {
       email,
       country,
     });
+  }
+
+  // Edit Client
+  @Mutation(() => Client)
+  async editClient(@Arg("editClientObject") editClientObject: EditClientInput) {
+    const client = { ...editClientObject };
+
+    // If the _id === client.id, return client edited
+    await ClientMongo.updateOne({ _id: client.id }, client);
+
+    return client;
   }
 }

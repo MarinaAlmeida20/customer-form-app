@@ -2,7 +2,7 @@ import { Field, ID, ObjectType } from "type-graphql";
 
 @ObjectType()
 export class Client {
-  /* the only place to use ID */
+  /* the only place to use ID : Client itself, edit */
   @Field((type) => ID)
   id: string;
 

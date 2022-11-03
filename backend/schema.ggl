@@ -18,8 +18,17 @@ input CreateClientInput {
   surname: String!
 }
 
+input EditClientInput {
+  country: String!
+  email: String!
+  firstName: String!
+  id: ID!
+  surname: String!
+}
+
 type Mutation {
   createClient(createClientObject: CreateClientInput!): Client!
+  editClient(editClientObject: EditClientInput!): Client!
 }
 
 type Query {
