@@ -15,7 +15,7 @@ interface Client {
 }
 
 // GraphQL - Query
-const GET_CLIENTS = gql`
+export const GET_CLIENTS = gql`
   query clients{
     clients {
       id

@@ -1,5 +1,7 @@
-import { useLazyQuery, gql } from '@apollo/client';
+import { useLazyQuery, useMutation, gql } from '@apollo/client';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { GET_CLIENTS } from '../../App';
+import { client } from '../../lib/apollo';
 
 interface Props {
     info: {
@@ -18,21 +20,53 @@ type Client = {
     country: string;
 }
 
+type ClientWithoutID = Omit<Client, "id">
+
 const GET_CLIENT = gql`
     query Client($clientId: String!) {
-    client(id: $clientId) {
-    id
-    firstName
-    surname
-    email
-    country
+        client(id: $clientId) {
+            id
+            firstName
+            surname
+            email
+            country
+        }
+}
+`;
+
+const ADD_CLIENT = gql`
+    mutation CreateClient($createClientObject: CreateClientInput!) {
+        createClient(createClientObject: $createClientObject) {
+            id
+            firstName
+            surname
+            email
+            country
     }
 }
 `;
 
+const EDIT_CLIENT = gql`
+    mutation EditClient($editClientObject: EditClientInput!) {
+        editClient(editClientObject: $editClientObject) {
+            id
+            firstName
+            surname
+            email
+            country
+        }
+    }
+`;
+
 export function ModalClient({ info, closeModal }: Props) {
-    // Do get when I want
+    // Get one client when I want
     const [getClient, getClientInfo] = useLazyQuery<{ client: Client }, { clientId: string }>(GET_CLIENT)
+
+    // create client
+    const [createClient, createClientInfo] = useMutation<{ createClient: Client }, { createClientObject: ClientWithoutID }>(ADD_CLIENT)
+
+    // edit client
+    const [editClient, editClientInfo] = useMutation<{ editClient: Client }, { editClientObject: Client }>(EDIT_CLIENT)
 
 
     const [values, setValues] = useState({
@@ -43,7 +77,7 @@ export function ModalClient({ info, closeModal }: Props) {
         country: "",
     })
 
-    // To fill up all the info above and edit
+    // To fill up all the info above and request one client
     useEffect(() => {
         if (!info.isEdit) return;
 
@@ -81,11 +115,76 @@ export function ModalClient({ info, closeModal }: Props) {
     }
 
     async function handleAddNewClient() {
-        // ?
+        await createClient({
+            variables: ({
+                createClientObject: {
+                    firstName: values.firstName,
+                    surname: values.surname,
+                    email: values.email,
+                    country: values.country,
+                }
+            }),
+            update: (cache, { data }) => {
+                const clientsResponse = client.readQuery<{ clients: Client[] }>({
+                    query: GET_CLIENTS,
+                });
+
+                cache.writeQuery({
+                    query: GET_CLIENTS,
+                    data: {
+                        clients: [...clientsResponse?.clients as any, { id: data?.createClient.id, firstName: data?.createClient.firstName, email: data?.createClient.email }]
+                    }
+                })
+            }
+        });
+
+        closeModal();
+
+        // clean the input
+        setValues({
+            id: "",
+            firstName: "",
+            surname: "",
+            email: "",
+            country: "",
+        })
     }
 
     async function handleEditClient() {
-        // ?
+        await editClient({
+            variables: ({
+                editClientObject: values
+            }),
+            update: (cache, { data }) => {
+                const clientsResponse = client.readQuery<{ clients: Client[] }>({
+                    query: GET_CLIENTS,
+                });
+
+                cache.writeQuery({
+                    query: GET_CLIENTS,
+                    data: {
+                        clients: clientsResponse?.clients.map(client => {
+                            if (client.id === data?.editClient.id) {
+                                return { id: data?.editClient.id, firstName: data?.editClient.firstName, email: data?.editClient.email }
+                            } else {
+                                return client
+                            }
+                        })
+                    }
+                })
+            }
+        });
+
+        closeModal();
+
+        // clean the input
+        setValues({
+            id: "",
+            firstName: "",
+            surname: "",
+            email: "",
+            country: "",
+        })
     }
 
     if (!info.open) return <></>;
