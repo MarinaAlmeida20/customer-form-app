@@ -1,3 +1,4 @@
+import { useLazyQuery, gql } from '@apollo/client';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 interface Props {
@@ -9,7 +10,31 @@ interface Props {
     closeModal: () => void;
 }
 
+type Client = {
+    id: string;
+    firstName: string;
+    surname: string;
+    email: string;
+    country: string;
+}
+
+const GET_CLIENT = gql`
+    query Client($clientId: String!) {
+    client(id: $clientId) {
+    id
+    firstName
+    surname
+    email
+    country
+    }
+}
+`;
+
 export function ModalClient({ info, closeModal }: Props) {
+    // Do get when I want
+    const [getClient, getClientInfo] = useLazyQuery<{ client: Client }, { clientId: string }>(GET_CLIENT)
+
+
     const [values, setValues] = useState({
         id: "",
         firstName: "",
@@ -18,11 +43,26 @@ export function ModalClient({ info, closeModal }: Props) {
         country: "",
     })
 
-    // To fill up all the info above
+    // To fill up all the info above and edit
     useEffect(() => {
         if (!info.isEdit) return;
 
-        // ? recuperar os dados do client
+        // request the data of the client
+        async function getValues() {
+            const currentClient = await getClient({
+                variables: { clientId: info.currentId }
+            })
+
+            setValues({
+                id: currentClient.data?.client.id,
+                firstName: currentClient.data?.client.firstName,
+                surname: currentClient.data?.client.surname,
+                email: currentClient.data?.client.email,
+                country: currentClient.data?.client.country,
+            } as Client)
+        }
+
+        getValues()
 
     }, [info])
 
