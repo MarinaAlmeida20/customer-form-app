@@ -37,8 +37,7 @@ function App() {
   // const { data, loading, error } = useQuery<{ clients: Client[] }>(GET_CLIENTS)
   const getClients = useQuery<{ clients: Client[] }>(GET_CLIENTS)
 
-
-  /// function
+  /// function - useMutation
   const [deleteClient, deleteClientInfo] = useMutation<{ deleteClient: string }, { deleteClientId: string }>(DELETE_CLIENT)
 
   const [modalInfo, setModalInfo] = useState({
@@ -73,10 +72,19 @@ function App() {
       },
       update: (cache, { data }) => {
         // console.log(data);
+        // reQuery get the last response of the query and store in clientsResponse
         const clientsResponse = client.readQuery<{ clients: Client[] }>({
           query: GET_CLIENTS,
         });
-        console.log(clientsResponse)
+        // console.log(clientsResponse)
+
+        // writeQuery => overwrite something
+        cache.writeQuery({
+          query: GET_CLIENTS,
+          data: {
+            clients: clientsResponse?.clients.filter(client => client.id !== id)
+          }
+        })
       }
 
     })
