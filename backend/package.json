@@ -2,13 +2,13 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "index.js",
   "engines": {
     "node": "16.15.0",
     "npm": "8.19.2"
   },
   "scripts": {
-    "start": "node index.ts",
+    "start": "node index.js",
     "dev": "tsnd --respawn --transpile-only index.ts"
   },
   "keywords": [],
