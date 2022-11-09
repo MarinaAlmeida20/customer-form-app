@@ -7,6 +7,13 @@ import { ModalClient } from './Components/ModalClient/ModalClient'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { client } from './lib/apollo'
 
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+import Modal from '@mui/material/Modal'
+import { Button } from '@mui/material'
+
 // typesScript
 interface Client {
   id: string;
@@ -95,32 +102,55 @@ function App() {
   return (
     <>
       <ModalClient info={modalInfo} closeModal={handleCloseModal} />
-      <div className='container'>
-        <h1 className='addInfo'/*isAddCard={true}*/ onClick={() => setModalInfo({
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: "center"
+      }} >
+
+        <Button onClick={() => setModalInfo({
           open: true,
           isEdit: false,
           currentId: ""
-        })} data-testid="open-modal-add">
+        })} aria-labelledby="modal-title"
+          aria-describedby="modal-desc">
           <IoAdd size={25} />
           <p>Add a New Client</p>
-        </h1>
+        </Button>
         {getClients.data?.clients.map((client) => (
-          <h1 className='client' key={client.id}>
-            <div className='info'>
-              <p className='title info-data'>{client.firstName}</p>
-              <p className='sub-title info-data'>{client.email}</p>
-            </div>
-            <div className='icons'>
-              <BiPencil data-testid='open-modal-edit' size={25} onClick={() => setModalInfo({
-                open: true,
-                isEdit: true,
-                currentId: client.id
-              })} />
-              <IoTrashOutline size={25} onClick={() => handleDeleteClient(client.id)} data-testid="delete-client" />
-            </div>
-          </h1>
+          <Card sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            minWidth: 400,
+            borderRadius: 0
+          }} key={client.id}>
+            <CardContent sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: "space-between",
+              alignItems: "center"
+            }}>
+              <Box>
+                <Typography gutterBottom variant="h5" component="div">
+                  {client.firstName}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {client.email}
+                </Typography>
+              </Box>
+              <Box sx={{ display: "grid" }}>
+                <BiPencil size={25} onClick={() => setModalInfo({
+                  open: true,
+                  isEdit: true,
+                  currentId: client.id
+                })} />
+                <IoTrashOutline size={25} onClick={() => handleDeleteClient(client.id)} />
+              </Box>
+            </CardContent>
+          </Card>
         ))}
-      </div>
+      </Box>
     </>
   )
 }
