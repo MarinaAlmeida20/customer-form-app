@@ -2,14 +2,14 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "server.js",
   "engines": {
     "node": "16.15.0",
     "npm": "8.19.2"
   },
   "scripts": {
-    "start": "node index.ts",
-    "dev": "tsnd --respawn --transpile-only index.ts"
+    "build": "rimraf dist && tsc",
+    "start": "npm run build && node dist/server.js"
   },
   "keywords": [],
   "author": "",
