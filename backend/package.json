@@ -2,13 +2,13 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "engines": {
     "node": "16.15.0",
     "npm": "8.19.2"
   },
   "scripts": {
-    "start": "node backend/index.ts"
+    "start": "node index.ts"
   },
   "keywords": [],
   "author": "",
