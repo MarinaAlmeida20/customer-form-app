@@ -8,8 +8,7 @@
     "npm": "8.19.2"
   },
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "tsnd --respawn --transpile-only index.ts"
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
