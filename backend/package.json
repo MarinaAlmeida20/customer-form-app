@@ -8,8 +8,9 @@
     "npm": "8.19.2"
   },
   "scripts": {
-    "build": "rimraf dist && tsc",
-    "start": "npm run build && node dist/server.js"
+    "start": "node build/server.js",
+    "build": "tsc",
+    "postinstall": "npm run build"
   },
   "keywords": [],
   "author": "",
