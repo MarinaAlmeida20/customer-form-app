@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node .",
-    "start:dev": "ts-node index.ts"
+    "start:dev": "ts-node server.ts"
   },
   "keywords": [],
   "author": "",
