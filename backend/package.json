@@ -2,13 +2,13 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "server.ts",
+  "main": "server.js",
   "engines": {
     "node": "16.15.0",
     "npm": "8.19.2"
   },
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node dist/server.js",
     "postinstall": "tsc",
     "start:dev": "ts-node server.ts"
   },
