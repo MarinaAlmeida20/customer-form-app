@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "node ./server.ts",
+    "start": "node src/server.ts",
     "start:dev": "ts-node server.ts"
   },
   "keywords": [],
