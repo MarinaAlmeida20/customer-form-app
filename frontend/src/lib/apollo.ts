@@ -8,6 +8,9 @@ import {
 import fetch from "cross-fetch";
 
 export const client = new ApolloClient({
-  link: new HttpLink({ uri: "http://localhost:4000/", fetch }),
+  link: new HttpLink({
+    uri: "https://customer-form-app-server.herokuapp.com/",
+    fetch,
+  }),
   cache: new InMemoryCache(),
 });
