@@ -15,6 +15,7 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "customer-form-app-server" #Must be unique in Heroku
           heroku_email: "marinabrito.ma@gmail.com"
+          buildpack: "https://github.com/HashNuke/heroku-buildpack-elixir.git"
           appdir: "backend" # <- This will point to the api folder in your project
 
 
