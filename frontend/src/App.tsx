@@ -53,7 +53,7 @@ function App() {
     currentId: ""
   })
 
-  // console.log(data);
+  console.log(getClients.data?.clients);
 
   // variable test
   // const clientDataTest: Client[] = [
